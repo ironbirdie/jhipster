@@ -9,7 +9,7 @@
 
     function WishController ($scope, $state, Wish, ParseLinks, AlertService) {
         var vm = this;
-        
+
         vm.wishes = [];
         vm.loadPage = loadPage;
         vm.page = 0;

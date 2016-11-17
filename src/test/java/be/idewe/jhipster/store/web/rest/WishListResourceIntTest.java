@@ -20,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -40,8 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = JhipsterstoreApp.class)
 public class WishListResourceIntTest {
 
-    private static final String DEFAULT_NAME = "AAAAA";
-    private static final String UPDATED_NAME = "BBBBB";
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
@@ -65,7 +64,7 @@ public class WishListResourceIntTest {
 
     private WishList wishList;
 
-    @PostConstruct
+    @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
         WishListResource wishListResource = new WishListResource();

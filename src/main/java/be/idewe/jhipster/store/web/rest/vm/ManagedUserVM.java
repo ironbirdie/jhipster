@@ -6,7 +6,6 @@ import java.util.Set;
 
 import be.idewe.jhipster.store.domain.User;
 import be.idewe.jhipster.store.service.dto.UserDTO;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**

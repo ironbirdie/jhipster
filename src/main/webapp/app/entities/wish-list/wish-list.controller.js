@@ -9,7 +9,7 @@
 
     function WishListController ($scope, $state, WishList) {
         var vm = this;
-        
+
         vm.wishLists = [];
 
         loadAll();

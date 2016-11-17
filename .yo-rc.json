@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "3.9.1",
+    "jhipsterVersion": "3.11.0",
     "baseName": "jhipsterstore",
     "packageName": "be.idewe.jhipster.store",
     "packageFolder": "be/idewe/jhipster/store",
