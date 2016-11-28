@@ -36,7 +36,7 @@
     <cache name="be.idewe.jhipster.store.domain.User.persistentTokens"
            timeToLiveSeconds="3600">
     </cache>
-    
+
     <cache name="be.idewe.jhipster.store.domain.WishList"
         timeToLiveSeconds="3600">
     </cache>

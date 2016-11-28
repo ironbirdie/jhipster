@@ -1,6 +1,7 @@
 package be.idewe.jhipster.store.web.rest;
 
 import be.idewe.jhipster.store.JhipsterstoreApp;
+import be.idewe.jhipster.store.config.JHipsterProperties;
 import be.idewe.jhipster.store.domain.Authority;
 import be.idewe.jhipster.store.domain.User;
 import be.idewe.jhipster.store.repository.AuthorityRepository;
@@ -45,6 +46,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AccountResourceIntTest {
 
     @Inject
+    private JHipsterProperties jHipsterProperties;
+
+    @Inject
     private UserRepository userRepository;
 
     @Inject
@@ -69,6 +73,7 @@ public class AccountResourceIntTest {
         doNothing().when(mockMailService).sendActivationEmail((User) anyObject(), anyString());
 
         AccountResource accountResource = new AccountResource();
+        ReflectionTestUtils.setField(accountResource, "jHipsterProperties", jHipsterProperties);
         ReflectionTestUtils.setField(accountResource, "userRepository", userRepository);
         ReflectionTestUtils.setField(accountResource, "userService", userService);
         ReflectionTestUtils.setField(accountResource, "mailService", mockMailService);
