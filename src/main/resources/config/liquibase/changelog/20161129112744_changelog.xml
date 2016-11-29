@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+   <changeSet author="laeremans3200 (generated)" id="1480415267872-1">
+      <addColumn tableName="wish">
+         <column name="priority" type="int4" defaultValue="0">
+            <constraints nullable="false"/>
+         </column>
+      </addColumn>
+   </changeSet>
+   <!--<changeSet author="laeremans3200 (generated)" id="1480415267872-2">-->
+      <!--<dropIndex indexName="idx_persistent_audit_event"-->
+                 <!--tableName="jhi_persistent_audit_event"/>-->
+   <!--</changeSet>-->
+   <!--<changeSet author="laeremans3200 (generated)" id="1480415267872-3">-->
+      <!--<dropIndex indexName="idx_persistent_audit_evt_data"-->
+                 <!--tableName="jhi_persistent_audit_evt_data"/>-->
+   <!--</changeSet>-->
+   <!--<changeSet author="laeremans3200 (generated)" id="1480415267872-4">
+      <dropForeignKeyConstraint baseTableName="wish" constraintName="FK_dc8b5ueryxbojo3quy9p8f7xw"/>
+      <addForeignKeyConstraint baseColumnNames="wish_list_id"
+                               baseTableName="wish"
+                               constraintName="FK_dc8b5ueryxbojo3quy9p8f7xw"
+                               referencedColumnNames="id"
+                               referencedTableName="wish_list"/>
+   </changeSet>
+   <changeSet author="laeremans3200 (generated)" id="1480415267872-5">
+      <dropForeignKeyConstraint baseTableName="jhi_persistent_audit_evt_data"
+                                constraintName="FK_evb970jo5bi8aon8s65c0lyyn"/>
+      <addForeignKeyConstraint baseColumnNames="event_id"
+                               baseTableName="jhi_persistent_audit_evt_data"
+                               constraintName="FK_evb970jo5bi8aon8s65c0lyyn"
+                               referencedColumnNames="event_id"
+                               referencedTableName="jhi_persistent_audit_event"/>
+   </changeSet>
+   <changeSet author="laeremans3200 (generated)" id="1480415267872-6">
+      <dropForeignKeyConstraint baseTableName="jhi_user_authority"
+                                constraintName="FK_ik5r332jlvpolfr7e5n7oi42l"/>
+      <addForeignKeyConstraint baseColumnNames="authority_name"
+                               baseTableName="jhi_user_authority"
+                               constraintName="FK_ik5r332jlvpolfr7e5n7oi42l"
+                               referencedColumnNames="name"
+                               referencedTableName="jhi_authority"/>
+   </changeSet>
+   <changeSet author="laeremans3200 (generated)" id="1480415267872-7">
+      <dropForeignKeyConstraint baseTableName="jhi_user_authority"
+                                constraintName="FK_pg0oaw6mr9pt3ibeihdc1jwof"/>
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="jhi_user_authority"
+                               constraintName="FK_pg0oaw6mr9pt3ibeihdc1jwof"
+                               referencedColumnNames="id"
+                               referencedTableName="jhi_user"/>
+   </changeSet>
+   <changeSet author="laeremans3200 (generated)" id="1480415267872-8">
+      <dropForeignKeyConstraint baseTableName="wish_list" constraintName="FK_r1w2h67p25icr918heol9jisu"/>
+      <addForeignKeyConstraint baseColumnNames="user_id"
+                               baseTableName="wish_list"
+                               constraintName="FK_r1w2h67p25icr918heol9jisu"
+                               referencedColumnNames="id"
+                               referencedTableName="jhi_user"/>
+   </changeSet>-->
+</databaseChangeLog>
