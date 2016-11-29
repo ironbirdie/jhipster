@@ -35,6 +35,16 @@ public class Wish implements Serializable {
     @ManyToOne
     private WishList wishList;
 
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    private int priority;
+
     public Long getId() {
         return id;
     }

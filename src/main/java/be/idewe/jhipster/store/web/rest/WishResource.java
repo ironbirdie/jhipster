@@ -1,5 +1,6 @@
 package be.idewe.jhipster.store.web.rest;
 
+import be.idewe.jhipster.store.service.UserService;
 import com.codahale.metrics.annotation.Timed;
 import be.idewe.jhipster.store.domain.Wish;
 import be.idewe.jhipster.store.service.WishService;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,9 +31,12 @@ import java.util.Optional;
 public class WishResource {
 
     private final Logger log = LoggerFactory.getLogger(WishResource.class);
-        
+
     @Inject
     private WishService wishService;
+
+
+
 
     /**
      * POST  /wishes : Create a new wish.
