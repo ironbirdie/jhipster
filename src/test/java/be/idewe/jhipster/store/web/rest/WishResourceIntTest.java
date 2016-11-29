@@ -2,8 +2,13 @@ package be.idewe.jhipster.store.web.rest;
 
 import be.idewe.jhipster.store.JhipsterstoreApp;
 
+import be.idewe.jhipster.store.domain.User;
 import be.idewe.jhipster.store.domain.Wish;
+import be.idewe.jhipster.store.domain.WishList;
+import be.idewe.jhipster.store.repository.UserRepository;
+import be.idewe.jhipster.store.repository.WishListRepository;
 import be.idewe.jhipster.store.repository.WishRepository;
+import be.idewe.jhipster.store.service.UserService;
 import be.idewe.jhipster.store.service.WishService;
 
 import org.junit.Before;
@@ -15,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -24,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = JhipsterstoreApp.class)
+@WithMockUser
 public class WishResourceIntTest {
 
     private static final Long DEFAULT_PRODUCT_ID = 1L;
@@ -52,6 +60,12 @@ public class WishResourceIntTest {
     private WishService wishService;
 
     @Inject
+    private WishListRepository wishListRepository;
+
+    @Inject
+    private UserRepository userRepository;
+
+    @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Inject
@@ -63,6 +77,10 @@ public class WishResourceIntTest {
     private MockMvc restWishMockMvc;
 
     private Wish wish;
+
+    private WishList wishList;
+
+    private User user;
 
     @Before
     public void setup() {
@@ -89,6 +107,11 @@ public class WishResourceIntTest {
 
     @Before
     public void initTest() {
+        user = userRepository.findOneByLogin("user").get();
+
+        System.out.println(user);
+        wishList = wishListRepository.saveAndFlush(new WishList().user(user).creationDate(LocalDate.now()).name("name"));
+        System.out.println(wishList);
         wish = createEntity(em);
     }
 
@@ -98,10 +121,9 @@ public class WishResourceIntTest {
         int databaseSizeBeforeCreate = wishRepository.findAll().size();
 
         // Create the Wish
-
         restWishMockMvc.perform(post("/api/wishes")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(wish)))
+                .content(TestUtil.convertObjectToJsonBytes(wish.wishList(wishList))))
                 .andExpect(status().isCreated());
 
         // Validate the Wish in the database
@@ -110,6 +132,7 @@ public class WishResourceIntTest {
         Wish testWish = wishes.get(wishes.size() - 1);
         assertThat(testWish.getProductId()).isEqualTo(DEFAULT_PRODUCT_ID);
         assertThat(testWish.getPrice()).isEqualTo(DEFAULT_PRICE);
+        assertThat(testWish.getWishList()).isEqualTo(wishList);
     }
 
     @Test
@@ -152,7 +175,7 @@ public class WishResourceIntTest {
     @Transactional
     public void getAllWishes() throws Exception {
         // Initialize the database
-        wishRepository.saveAndFlush(wish);
+        wishRepository.saveAndFlush(wish.wishList(wishList));
 
         // Get all the wishes
         restWishMockMvc.perform(get("/api/wishes?sort=id,desc"))
@@ -160,14 +183,15 @@ public class WishResourceIntTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(wish.getId().intValue())))
                 .andExpect(jsonPath("$.[*].productId").value(hasItem(DEFAULT_PRODUCT_ID.intValue())))
-                .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())));
+                .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.intValue())))
+                .andExpect(jsonPath("$.[*].wishList.id").value(hasItem(wishList.getId().intValue())));
     }
 
     @Test
     @Transactional
     public void getWish() throws Exception {
         // Initialize the database
-        wishRepository.saveAndFlush(wish);
+        wishRepository.saveAndFlush(wish.wishList(wishList));
 
         // Get the wish
         restWishMockMvc.perform(get("/api/wishes/{id}", wish.getId()))
@@ -175,7 +199,8 @@ public class WishResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(wish.getId().intValue()))
             .andExpect(jsonPath("$.productId").value(DEFAULT_PRODUCT_ID.intValue()))
-            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.intValue()));
+            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.intValue()))
+            .andExpect(jsonPath("$.wishList.id").value(wishList.getId().intValue()));
     }
 
     @Test
@@ -190,7 +215,7 @@ public class WishResourceIntTest {
     @Transactional
     public void updateWish() throws Exception {
         // Initialize the database
-        wishService.save(wish);
+        wishService.save(wish.wishList(wishList));
 
         int databaseSizeBeforeUpdate = wishRepository.findAll().size();
 
@@ -217,7 +242,7 @@ public class WishResourceIntTest {
     @Transactional
     public void deleteWish() throws Exception {
         // Initialize the database
-        wishService.save(wish);
+        wishService.save(wish.wishList(wishList));
 
         int databaseSizeBeforeDelete = wishRepository.findAll().size();
 

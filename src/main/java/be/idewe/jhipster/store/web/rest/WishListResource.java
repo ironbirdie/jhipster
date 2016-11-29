@@ -1,5 +1,6 @@
 package be.idewe.jhipster.store.web.rest;
 
+import be.idewe.jhipster.store.security.SecurityUtils;
 import be.idewe.jhipster.store.service.UserService;
 import com.codahale.metrics.annotation.Timed;
 import be.idewe.jhipster.store.domain.WishList;
@@ -88,6 +89,8 @@ public class WishListResource {
     public List<WishList> getAllWishLists() {
         log.debug("REST request to get all WishLists");
         // TODO check this out later
+
+        System.out.println(SecurityUtils.getCurrentUserLogin());
         List<WishList> wishLists = wishListRepository.findByUserIsCurrentUser();
         return wishLists;
     }
